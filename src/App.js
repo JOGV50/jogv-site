@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 
 // Journey of Good Vibes™ — Parent Site Prototype (Single-file React)
 // Vibrant background with slow pulsing/shine animation
@@ -54,10 +54,85 @@ const GVButton = ({ href, children }) => (
   </a>
 );
 
+/* ---------------------------
+   Custom Select (fully styled)
+   --------------------------- */
+function useClickOutside(ref, onClickOutside) {
+  useEffect(() => {
+    function handler(e) {
+      if (!ref.current) return;
+      if (!ref.current.contains(e.target)) onClickOutside?.();
+    }
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("touchstart", handler, { passive: true });
+    return () => {
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("touchstart", handler);
+    };
+  }, [ref, onClickOutside]);
+}
+
+function CustomSelect({ name, label, value, onChange, options }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useClickOutside(ref, () => setOpen(false));
+
+  const toggle = () => setOpen((o) => !o);
+  const select = (val) => {
+    onChange(val);
+    setOpen(false);
+  };
+
+  return (
+    <div className="relative" ref={ref}>
+      {/* Visible button that matches inputs */}
+      <button
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={toggle}
+        className="w-full rounded-xl border border-white/10 bg-white/10 px-3 py-2 text-left text-white outline-none focus:ring-2 focus:ring-white/30"
+      >
+        {value}
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <ul
+          role="listbox"
+          className="absolute z-50 mt-1 w-full rounded-xl border border-white/10 bg-white/10 backdrop-blur text-white shadow-xl overflow-hidden"
+        >
+          {options.map((opt) => (
+            <li
+              role="option"
+              aria-selected={opt === value}
+              key={opt}
+              onClick={() => select(opt)}
+              className="cursor-pointer px-3 py-2 hover:bg-white/20"
+            >
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Hidden field so Netlify receives the value */}
+      <input type="hidden" name={name} value={value} />
+      {label && (
+        <span className="sr-only">{label}</span>
+      )}
+    </div>
+  );
+}
+
 export default function App() {
   const qod = useQuoteOfDay();
   const [vibrant] = useState(true);               // keep theme state (no toggle button)
   const [openPreface, setOpenPreface] = useState(null); // 'foster' | 'job'
+
+  // Form state for the custom select
+  const [typeValue, setTypeValue] = useState("Story");
 
   const isLocalhost =
     typeof window !== "undefined" &&
@@ -65,13 +140,15 @@ export default function App() {
       window.location.hostname === "127.0.0.1");
 
   const handleSubmit = (e) => {
-    // When running locally, show a nice preview instead of posting to Netlify
+    // When running locally, show a preview instead of posting to Netlify
     if (isLocalhost) {
       e.preventDefault();
       alert("Thanks! (Local preview) — On Netlify this form will submit to your dashboard.");
       e.currentTarget.reset();
+      // Reset our custom select too
+      setTypeValue("Story");
     }
-    // On Netlify, we DO NOT preventDefault — Netlify will capture the submission.
+    // On Netlify, do not preventDefault — Netlify will capture the submission.
   };
 
   return (
@@ -100,7 +177,6 @@ export default function App() {
       <header className={`sticky top-0 z-50 border-b backdrop-blur ${vibrant ? "border-white/10 bg-[#0f1220]/60" : "border-slate-200/70 bg-[rgb(252,248,239)]/80"}`}>
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
-            {/* (Icon removed) */}
             <div className="leading-tight">
               <div className={`text-base font-extrabold ${vibrant ? "text-white" : "text-slate-900"}`}>Journey of Good Vibes™</div>
               <div className={`text-[11px] -mt-0.5 ${vibrant ? "text-white/70" : "text-slate-600"}`}>Leveling Up Life – One Good Vibe at a Time</div>
@@ -127,6 +203,7 @@ export default function App() {
               <a href="#journey-map" className="rounded-xl bg-white/10 px-5 py-3 font-semibold text-white shadow hover:bg-white/20">Explore the Journey Map</a>
               <a href="#good-vibe" className="rounded-xl bg-pink-500 px-5 py-3 font-semibold text-white shadow hover:bg-pink-600">Today's Good Vibe</a>
               <a href="#future" className="rounded-xl bg-gradient-to-r from-fuchsia-500 to-teal-400 px-5 py-3 font-semibold text-white shadow hover:opacity-95">The Future</a>
+              <a href="#submit" className="rounded-xl bg-white/10 px-5 py-3 font-semibold text-white shadow hover:bg-white/20">Submit a Good Vibe</a>
             </div>
           </div>
 
@@ -275,7 +352,7 @@ export default function App() {
             <p className="mt-2 text-slate-200">Be part of the JOGVtoken network—connect, share, and grow with others on Telegram, Discord, and X.</p>
             <div className="mt-4 flex flex-wrap items-center gap-2">
               <GVButton href="https://t.me/+DxahGsiRUQ9hNTkx">Telegram</GVButton>
-              <GVButton href="https://discord.gg/vsTSyX5Z">Discord</GVButton>
+              <GVButton href="https://discord.gg/wKMt3mWmXz">Discord</GVButton>
               <GVButton href="https://x.com/jogv50">X (Twitter)</GVButton>
               <GVButton href="https://jogvtoken.com">jogvtoken.com</GVButton>
             </div>
@@ -310,31 +387,44 @@ export default function App() {
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="text-sm text-white/80">Name</label>
-              <input name="name" className="mt-1 w-full rounded-xl border border-white/10 bg-white/10 px-3 py-2 text-white placeholder-white/60 outline-none" placeholder="Optional" />
+              <label className="text-sm text-white/80" htmlFor="gv-name">Name</label>
+              <input id="gv-name" name="name" className="mt-1 w-full rounded-xl border border-white/10 bg-white/10 px-3 py-2 text-white placeholder-white/60 outline-none" placeholder="Optional" />
             </div>
             <div>
-              <label className="text-sm text-white/80">Email</label>
-              <input name="email" type="email" className="mt-1 w-full rounded-xl border border-white/10 bg-white/10 px-3 py-2 text-white placeholder-white/60 outline-none" placeholder="Optional" />
+              <label className="text-sm text-white/80" htmlFor="gv-email">Email</label>
+              <input id="gv-email" name="email" type="email" className="mt-1 w-full rounded-xl border border-white/10 bg-white/10 px-3 py-2 text-white placeholder-white/60 outline-none" placeholder="Optional" />
             </div>
           </div>
+
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="text-sm text-white/80">Type</label>
-              <select name="type" className="mt-1 w-full rounded-xl border border-white/10 bg-white/10 px-3 py-2 text-white outline-none">
-                <option>Story</option>
-                <option>Quote</option>
-                <option>Challenge Idea</option>
-              </select>
+              <label className="text-sm text-white/80" htmlFor="gv-type">Type</label>
+              <CustomSelect
+                name="type"
+                label="Type"
+                value={typeValue}
+                onChange={setTypeValue}
+                options={["Story", "Quote", "Challenge Idea"]}
+              />
             </div>
+
             <div className="sm:col-span-2">
-              <label className="text-sm text-white/80">Message</label>
-              <textarea name="message" className="mt-1 h-32 w-full rounded-xl border border-white/10 bg-white/10 px-3 py-2 text-white placeholder-white/60 outline-none" placeholder="Share your good vibe..." />
+              <label className="text-sm text-white/80" htmlFor="gv-message">Message</label>
+              <textarea
+                id="gv-message"
+                name="message"
+                className="mt-1 h-32 w-full rounded-xl border border-white/10 bg-white/10 px-3 py-2 text-white placeholder-white/60 outline-none"
+                placeholder="Share your good vibe..."
+              />
             </div>
           </div>
+
           <div className="mt-6">
-            <button type="submit" className="rounded-xl bg-gradient-to-r from-fuchsia-500 to-teal-400 px-5 py-3 text-sm font-bold text-white shadow hover:opacity-95">Submit</button>
+            <button type="submit" className="rounded-xl bg-gradient-to-r from-fuchsia-500 to-teal-400 px-5 py-3 text-sm font-bold text-white shadow hover:opacity-95">
+              Submit
+            </button>
           </div>
+
           {isLocalhost && (
             <p className="mt-3 text-xs text-white/60">(Preview mode: you’ll see an alert instead of a real submission.)</p>
           )}
@@ -344,7 +434,7 @@ export default function App() {
       {/* Footer */}
       <footer className="mt-16 border-t border-white/10 py-8">
         <div className="mx-auto max-w-6xl px-4 text-xs text-white/60">
-          © {new Date().getFullYear()} Journey of Good Vibes™ (JOGV™). All rights reserved.
+          © {new Date().getFullYear()} Journey of Good Vibes™ (JOGV™). All rights reserved. • 2025 SaaR Media Group LLC
         </div>
       </footer>
     </div>
