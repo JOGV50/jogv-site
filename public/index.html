@@ -1,43 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Primary SEO -->
+    <!-- =========================
+         Primary SEO / Essentials
+    ========================== -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Journey of Good Vibes™</title>
-    <meta name="theme-color" content="#000000" />
+    <title>Journey of Good Vibes™ — Level Up Your Life</title>
+
+    <!-- Description (SEO-rich) -->
     <meta
       name="description"
-      content="Journey of Good Vibes™ – Leveling Up Life One Good Vibe at a Time. Positivity, Resilience, Kindness, Community, and Growth."
+      content="Journey of Good Vibes™ is a positive lifestyle movement inspiring personal growth, kindness, and resilience. Explore self-help tools, motivational content, and a community focused on leveling up life—one good vibe at a time."
     />
+
+    <!-- Optional keywords for smaller engines -->
+    <meta
+      name="keywords"
+      content="Journey of Good Vibes, good vibes movement, positivity, self help, self-help, inspiration, personal growth, mindset, motivation, kindness, community, resilience, wellness, lifestyle brand, personal development"
+    />
+
+    <meta name="theme-color" content="#111827" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://journeyofgoodvibes.com/" />
+
+    <!-- Icons / PWA -->
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <!-- Open Graph (Facebook/LinkedIn/etc.) -->
+    <!-- =========================
+         Open Graph / Facebook / LinkedIn
+         (Ensure /public/og-image.png is 1200x630)
+    ========================== -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Journey of Good Vibes™" />
-    <meta property="og:title" content="Journey of Good Vibes™" />
-    <meta
-      property="og:description"
-      content="Level Up Your Life – One Good Vibe at a Time. Positivity, Resilience, Kindness, Community, and Growth."
-    />
-    <meta property="og:url" content="https://journeyofgoodvibes.com" />
-    <!-- Place a 1200x630 image named og-image.png in /public -->
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Journey of Good Vibes™ — Level Up Your Life" />
+    <meta property="og:description" content="A lifestyle movement to help you grow happier and stronger — one good vibe at a time." />
+    <meta property="og:url" content="https://journeyofgoodvibes.com/" />
     <meta property="og:image" content="%PUBLIC_URL%/og-image.png" />
+    <meta property="og:image:secure_url" content="%PUBLIC_URL%/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Journey of Good Vibes™ — octopus mascot and vibrant gradient background" />
 
-    <!-- Twitter -->
+    <!-- =========================
+         Twitter Cards
+    ========================== -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Journey of Good Vibes™" />
-    <meta
-      name="twitter:description"
-      content="Level Up Your Life – One Good Vibe at a Time. Positivity, Resilience, Kindness, Community, and Growth."
-    />
+    <meta name="twitter:title" content="Journey of Good Vibes™ — Level Up Your Life" />
+    <meta name="twitter:description" content="Positivity, Resilience, Kindness, Community, and Growth. Join the movement." />
     <meta name="twitter:image" content="%PUBLIC_URL%/og-image.png" />
+    <meta name="twitter:site" content="@jogv50" />
+
+    <!-- =========================
+         Structured Data (Schema.org)
+         Organization + Website + Article
+    ========================== -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Journey of Good Vibes™",
+      "url": "https://journeyofgoodvibes.com/",
+      "logo": "https://journeyofgoodvibes.com/logo192.png",
+      "sameAs": [
+        "https://x.com/jogv50",
+        "https://t.me/jogv50",
+        "https://www.facebook.com/profile.php?id=61581640531308"
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Journey of Good Vibes™",
+      "url": "https://journeyofgoodvibes.com/",
+      "description": "A lifestyle movement inspiring positivity, personal growth, and self-improvement through kindness, resilience, and community.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://journeyofgoodvibes.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Level Up Your Life with Good Vibes",
+      "author": { "@type": "Person", "name": "Rusty Reynolds" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "SaaR Media Group LLC",
+        "logo": { "@type": "ImageObject", "url": "https://journeyofgoodvibes.com/logo192.png" }
+      },
+      "description": "Discover daily inspiration, mindfulness, and self-help tools to level up your life—one good vibe at a time.",
+      "mainEntityOfPage": { "@type": "WebPage", "@id": "https://journeyofgoodvibes.com/" }
+    }
+    </script>
   </head>
 
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <!-- Friendly fallback for users/bots with JavaScript disabled -->
+    <noscript>
+      <div style="padding:2rem; max-width:720px; margin:3rem auto; font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; line-height:1.6; color:#111827;">
+        <h1 style="margin:0 0 0.5rem; font-size:2rem;">Journey of Good Vibes™</h1>
+        <p style="margin:0 0 1rem;">
+          Level up your life with Positivity, Resilience, Kindness, Community, and Growth.
+          To experience the full site, please enable JavaScript. In the meantime, you can
+          <a href="https://x.com/jogv50">follow us on X</a> or
+          <a href="https://t.me/jogv50">join our Telegram</a>.
+        </p>
+      </div>
+    </noscript>
+
     <div id="root"></div>
 
     <!-- Netlify hidden form template (for build-time detection) -->
