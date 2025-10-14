@@ -16,3 +16,7 @@
   [headers.values]
     Access-Control-Allow-Origin = "*"
     X-Robots-Tag = "index, follow"
+
+[[edge_functions]]
+  path = "/*"
+  function = "prerender"
