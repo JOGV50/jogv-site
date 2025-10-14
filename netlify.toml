@@ -10,7 +10,7 @@
   to = "/index.html"
   status = 200
 
-# Helpful headers for bots/crawlers (safe defaults)
+# Helpful headers for bots/crawlers
 [[headers]]
   for = "/*"
   [headers.values]
@@ -28,6 +28,7 @@
   [headers.values]
     Content-Type = "image/png"
 
-[edge_functions]
-  path = "/"
+# Map the Edge Function to all paths (note the double brackets!)
+[[edge_functions]]
+  path = "/*"
   function = "prerender"
