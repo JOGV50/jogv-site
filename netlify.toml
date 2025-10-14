@@ -17,6 +17,17 @@
     Access-Control-Allow-Origin = "*"
     X-Robots-Tag = "index, follow"
 
-[[edge_functions]]
-  path = "/*"
+# Explicit MIME type headers for OG images
+[[headers]]
+  for = "/og-image.jpg"
+  [headers.values]
+    Content-Type = "image/jpeg"
+
+[[headers]]
+  for = "/og-image.png"
+  [headers.values]
+    Content-Type = "image/png"
+
+[edge_functions]
+  path = "/"
   function = "prerender"
