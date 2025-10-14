@@ -1,0 +1,18 @@
+# netlify.toml (root of the repo)
+
+[build]
+  command = "npm run build"
+  publish = "build"
+
+# SPA routing: send all paths to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Helpful headers for bots/crawlers (safe defaults)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    X-Robots-Tag = "index, follow"
