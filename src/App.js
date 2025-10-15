@@ -1,4 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
+import ComplimentGenerator from "./components/ComplimentGenerator";
+import GratitudeWall from "./components/GratitudeWall";
+
 
 // Journey of Good Vibes™ — Parent Site Prototype (Single-file React)
 // Vibrant background with slow pulsing/shine animation
@@ -228,6 +231,24 @@ export default function App() {
         </div>
       </Section>
 
+{/* Compliment Generator */}
+<Section
+  id="compliments"
+  title="Compliment Generator"
+  subtitle="Make someone’s day in 10 seconds."
+>
+  <ComplimentGenerator />
+</Section>
+
+{/* Gratitude Wall */}
+<Section
+  id="gratitude"
+  title="Gratitude Wall"
+  subtitle="Post a tiny win or a moment you’re thankful for."
+>
+  <GratitudeWall />
+</Section>
+
       {/* Journey Map */}
       <Section id="journey-map" title="The Journey Map" subtitle="Walk the five pillars and unlock daily actions.">
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -440,3 +461,4 @@ export default function App() {
     </div>
   );
 }
+
